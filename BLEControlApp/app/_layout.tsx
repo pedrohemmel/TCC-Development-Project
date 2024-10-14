@@ -1,18 +1,24 @@
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-// SplashScreen.preventAutoHideAsync();
 import React from 'react';
-import { SafeAreaView, StatusBar, View } from 'react-native';
-import BleButton from './components/BLEButton';
+import { SafeAreaView, Text, StyleSheet } from 'react-native';
+import BluetoothToggle from './components/BLEButton';
 
-const Layout = () => {
+export default function Layout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" />
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <BleButton />
-      </View>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Bluetooth Toggle</Text>
+      <BluetoothToggle />
     </SafeAreaView>
   );
-};
+}
 
-export default Layout;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+  },
+});
