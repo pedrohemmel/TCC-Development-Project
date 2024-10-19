@@ -20,7 +20,7 @@ db.connect((err) => {
   console.log('Conectado ao banco de dados MySQL como ID:', db.threadId);
 });
 
-export default {
+module.exports = {
     db
 }
 

@@ -1,3 +1,7 @@
+CREATE DATABASE ble_project_db;
+
+USE ble_project_db;
+
 CREATE TABLE devices (
     id SERIAL PRIMARY KEY,
     local_name VARCHAR(255) NOT NULL,
