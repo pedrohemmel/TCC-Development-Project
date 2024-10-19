@@ -1,0 +1,17 @@
+{
+  "name": "bleprojectapi",
+  "version": "1.0.0",
+  "description": "Project to send BLEControlApp data to database",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./source/server.js"
+  },
+  "author": "Pedro Henrique Dias Hemmel de Oliveira Souza",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mysql2": "^3.11.3"
+  }
+}
