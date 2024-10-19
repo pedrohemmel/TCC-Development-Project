@@ -1,96 +1,144 @@
-# Projeto de desenvolvimento para o tema: ANÁLISE DA MOVIMENTAÇÃO EM MASSA DE PESSOAS EM EVENTOS UTILIZANDO BLUETOOTH
+# **Projeto de Desenvolvimento: Análise da Movimentação em Massa de Pessoas em Eventos Utilizando Bluetooth**
 
-## Introdução 
+## **Introdução**
 
-### BluetoothScan
+Este projeto tem como objetivo analisar a movimentação em massa de pessoas em eventos por meio da captação de dispositivos utilizando Bluetooth Low Energy (BLE). Ele é composto por dois componentes principais:
 
-Esse projeto feito em react native é utilizado para ativar o Bluetooth Low Energy dos dispositivos smarthphones, possibilitando a captação dos dispositivos a volta de cada ponto de bluetooth alocado no evento
+### **BluetoothScan**
 
-### BLEProjectAPI
+- **Tecnologia**: React Native
+- **Função**: Ativar o Bluetooth Low Energy (BLE) dos smartphones, permitindo a captação de dispositivos em volta de cada ponto Bluetooth alocado no evento.
 
-API feita para enviar dados do projeto BLEControlApp para o banco de dados.
+### **BLEProjectAPI**
 
-#### Configuração local
+- **Tecnologia**: Node.js
+- **Função**: API desenvolvida para receber os dados coletados pelo **BluetoothScan** e armazená-los no banco de dados MySQL para análise posterior.
 
-Libs base do projeto
-```
+---
+
+## **Configuração Local**
+
+Para configurar o ambiente local do projeto, siga os passos abaixo:
+
+### **1. Instalação das Dependências Básicas**
+
+Execute os comandos abaixo para instalar as bibliotecas essenciais:
+
+```bash
 npm install express
 npm install -g nodemon
 npm install dotenv
 ```
 
-Libs banco de dados
-```
+### **2. Instalação das Dependências para Banco de Dados**
+
+Instale o MySQL2, necessário para conectar a API ao banco de dados MySQL:
+
+```bash
 npm install mysql2
 ```
 
-#### Configurações docker
+---
 
-Rode o seguinte comando no terminal para criar um container docker
-```
+## **Configurações Docker**
+
+### **Criando o Container MySQL**
+
+Para criar um container MySQL utilizando o Docker, execute o seguinte comando no terminal:
+
+```bash
 docker run --name name-your-container -p 3306:3306 -e MYSQL_ROOT_PASSWORD=your_password -d mysql:latest
 ```
 
-Verifique se o container está rodando com o seguinte comando
-```
+### **Verificando o Status do Container**
+
+Confira se o container foi criado corretamente e está em execução com o comando:
+
+```bash
 docker ps
 ```
 
-Copie o seu script sql para dentro do container docker
-```
+### **Copiando o Script SQL para o Container**
+
+Depois que o container estiver rodando, copie o seu script SQL para dentro do container:
+
+```bash
 docker cp path_do_script/game-db.sql nome-do-container:/init.sql
 ```
 
-Se conecte no shell sql e coloque a mesma senha de quando criou o container
-```
+### **Conectando-se ao Shell do MySQL**
+
+Conecte-se ao shell do MySQL no container e use a senha definida anteriormente:
+
+```bash
 docker exec -it nome_do_container mysql -uroot -p
 ```
 
-Rode o script copiado para o container
-```
+### **Executando o Script SQL**
+
+Dentro do shell do MySQL, execute o script que você copiou para o container:
+
+```bash
 source /init.sql;
 ```
 
-#### Instalar Cliente MySQL
+---
 
-##### macOS
+## **Instalando o Cliente MySQL**
 
-Instale o Homebrew (se ainda não estiver instalado):
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+Dependendo do seu sistema operacional, siga as instruções abaixo para instalar o cliente MySQL.
 
-Instale o cliente MySQL:
-```
-brew install mysql
-```
+### **macOS**
 
-##### Ubuntu/Debian
+1. Instale o **Homebrew** (caso ainda não esteja instalado):
 
-Atualize o índice de pacotes:
-```
-sudo apt update
-```
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
 
-Instale o cliente MySQL:
-```
-sudo apt install mysql-client
-```
+2. Em seguida, instale o cliente MySQL:
 
-##### Windows
+   ```bash
+   brew install mysql
+   ```
+
+### **Ubuntu/Debian**
+
+1. Atualize o índice de pacotes:
+
+   ```bash
+   sudo apt update
+   ```
+
+2. Instale o cliente MySQL:
+
+   ```bash
+   sudo apt install mysql-client
+   ```
+
+### **Windows**
 
 1. Baixe o instalador do MySQL em [MySQL Downloads](https://dev.mysql.com/downloads/installer/).
 2. Siga as instruções do instalador para instalar o cliente MySQL.
 
-##### Verificar a Instalação
+### **Verificar a Instalação**
 
-Após a instalação, verifique se o cliente MySQL foi instalado corretamente:
-```
+Para verificar se o cliente MySQL foi instalado corretamente, utilize o comando:
+
+```bash
 mysql --version
 ```
 
-#### Configure as variáveis
+---
 
-Configure as variáveis de ambiente de conexão com o banco de dados e portas que serão utilizadas no código criando um arquivo .env.
+## **Configuração de Variáveis de Ambiente**
 
-Utilize o .env.example como examplo para criar o seu próprio.
+Crie um arquivo `.env` no diretório do projeto para configurar as variáveis de ambiente necessárias, como as credenciais de acesso ao banco de dados e as portas que serão utilizadas. Você pode usar o arquivo `.env.example` como modelo para isso.
+
+**Atenção**: Deixe as variáveis organizadas e evite sobrescrever informações críticas.
+
+---
+
+## **Conclusão**
+
+Com essa configuração, você terá um ambiente de desenvolvimento pronto para analisar a movimentação em massa de pessoas em eventos utilizando Bluetooth Low Energy. Certifique-se de seguir as etapas com atenção e mantenha seu ambiente de trabalho bem organizado.
