@@ -82,6 +82,8 @@ Dentro do shell do MySQL, execute o script que você copiou para o container:
 source /init.sql;
 ```
 
+#### **Utilize o Insomnia de Exemplo para Inserir Dados no Banco de Dados**
+
 ---
 
 ## **Instalando o Cliente MySQL**
