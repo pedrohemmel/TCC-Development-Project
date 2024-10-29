@@ -63,7 +63,7 @@ docker ps
 Depois que o container estiver rodando, copie o seu script SQL para dentro do container:
 
 ```bash
-docker cp path_do_script/game-db.sql nome-do-container:/init.sql
+docker cp path_do_script/ble_project_script nome-do-container:/init.sql
 ```
 
 ### **Conectando-se ao Shell do MySQL**
@@ -81,6 +81,8 @@ Dentro do shell do MySQL, execute o script que você copiou para o container:
 ```bash
 source /init.sql;
 ```
+
+#### **Utilize o Insomnia de Exemplo para Inserir Dados no Banco de Dados**
 
 ---
 
@@ -145,8 +147,8 @@ Com essa configuração, você terá um ambiente de desenvolvimento pronto para 
 
 ## A fazer
 
-[ ] Criar banco de dados com o sql definido
-[ ] Criar classes js para população do banco de dados via API
-[ ] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
-[ ] Exportar os dados e inserir no Power BI
-[ ] Criar páginas de análise dos dados obtidos
+- [x] Criar banco de dados com o sql definido
+- [x] Criar classes js para população do banco de dados via API
+- [ ] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
+- [ ] Exportar os dados e inserir no Power BI
+- [ ] Criar páginas de análise dos dados obtidos
