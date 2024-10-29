@@ -142,3 +142,11 @@ Crie um arquivo `.env` no diretório do projeto para configurar as variáveis de
 ## **Conclusão**
 
 Com essa configuração, você terá um ambiente de desenvolvimento pronto para analisar a movimentação em massa de pessoas em eventos utilizando Bluetooth Low Energy. Certifique-se de seguir as etapas com atenção e mantenha seu ambiente de trabalho bem organizado.
+
+## A fazer
+
+[ ] Criar banco de dados com o sql definido
+[ ] Criar classes js para população do banco de dados via API
+[ ] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
+[ ] Exportar os dados e inserir no Power BI
+[ ] Criar páginas de análise dos dados obtidos
