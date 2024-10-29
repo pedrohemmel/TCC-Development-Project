@@ -4,7 +4,7 @@ USE ble_project_db;
 
 -- Tabela de Dispositivos
 CREATE TABLE Devices (
-    id_device INT PRIMARY KEY AUTO_INCREMENT,
+    id_device VARCHAR(36) PRIMARY KEY,
     first_seen DATETIME,
     last_seen DATETIME
 );
@@ -18,7 +18,7 @@ CREATE TABLE Beacon_Locations (
 -- Tabela de Detecção de Dispositivos
 CREATE TABLE Device_Detection (
     detection_id INT PRIMARY KEY AUTO_INCREMENT,
-    id_device INT NOT NULL,
+    id_device VARCHAR(36) NOT NULL,
     local_beacon_id INT NOT NULL,
     date_time_in_beacon DATETIME NOT NULL,
     dwell_time INT, -- Tempo de permanência em segundos
