@@ -147,8 +147,8 @@ Com essa configuração, você terá um ambiente de desenvolvimento pronto para 
 
 ## A fazer
 
-- [ ] Criar banco de dados com o sql definido
-- [ ] Criar classes js para população do banco de dados via API
+- [x] Criar banco de dados com o sql definido
+- [x] Criar classes js para população do banco de dados via API
 - [ ] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
 - [ ] Exportar os dados e inserir no Power BI
 - [ ] Criar páginas de análise dos dados obtidos
