@@ -63,7 +63,7 @@ docker ps
 Depois que o container estiver rodando, copie o seu script SQL para dentro do container:
 
 ```bash
-docker cp path_do_script/game-db.sql nome-do-container:/init.sql
+docker cp path_do_script/ble_project_script nome-do-container:/init.sql
 ```
 
 ### **Conectando-se ao Shell do MySQL**
