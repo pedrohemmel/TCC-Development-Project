@@ -1,13 +1,30 @@
 import asyncio
-from bleak import BleakScanner
 import requests
-from datetime import datetime
 
 # Configuração de informações locais e URLs dos endpoints da API
-local_name = "9I92JENDNSANI"
+
 api_base_url = "http://localhost:3000"
 
 # Funções auxiliares para fazer POST nas diferentes tabelas
+
+######adicionar função de achar dispositivo na API
+async def get_device(device_id):
+    url = f"{api_base_url}/device"
+    request = {
+        "id_device": device_id
+    }
+    try:
+        response = requests.post(url, json=request)
+        if response.status_code < 200 or response.status_code > 299:
+            print(f"Dispositivo {device_id} não registrado no sistema")
+            return None
+        else:
+            device_data = response.json()
+            print(f"Dispositivo {device_id} registrado no sistema: {device_data}")
+            return device_data
+    except requests.RequestException as e:
+        print(f"Erro de requisição: {e}")
+        return None
 
 async def post_device(device_id, first_seen, last_seen):
     url = f"{api_base_url}/devices"
@@ -21,6 +38,24 @@ async def post_device(device_id, first_seen, last_seen):
         print(f"Dispositivo {device_id} inserido com sucesso.")
     else:
         print(f"Erro ao inserir dispositivo {device_id}. Status code: {response.status_code}")
+
+async def update_device(device_id, last_seen):
+    url = f"{api_base_url}/devices"
+    payload = {
+        "id_device": device_id,
+        "last_seen": last_seen
+    }
+    try:
+        response = requests.put(url, json=payload)
+        if response.status_code >= 200 and response.status_code < 300:
+            print(f"Dispositivo {device_id} atualizado com sucesso.")
+            return response.json()
+        else:
+            print(f"Erro ao atualizar o dispositivo {device_id}: {response.status_code}")
+            return None
+    except requests.RequestException as e:
+        print(f"Erro de requisição: {e}")
+        return None
 
 async def post_device_detection(device_id, local_beacon_id, date_time_in_beacon, dwell_time):
     url = f"{api_base_url}/device-detections"
@@ -67,40 +102,35 @@ async def post_event_alert(local_beacon_id, date_time_event, event_type, descrip
     else:
         print(f"Erro ao inserir evento/alerta. Status code: {response.status_code}")
 
-# Função principal de varredura BLE e envio de dados
-
-async def scan_ble_devices():
-    local_beacon_id = 1  # Exemplo: identificação local para simular a localização do beacon
-
-    while True:
-        print("Iniciando a varredura de dispositivos BLE...")
-        devices = await BleakScanner.discover()
-
-        if devices:
-            print(f"Dispositivos encontrados ({len(devices)}):")
-            for device in devices:
-                print(f"Nome: {device.name}, Endereço: {device.address}, RSSI: {device.rssi}")
-                
-                # Timestamp de detecção
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
-                # Inserir dispositivo e detecção
-                await post_device(device_id=device.address, first_seen=timestamp, last_seen=timestamp)
-                await post_device_detection(device_id=device.address, local_beacon_id=local_beacon_id, date_time_in_beacon=timestamp, dwell_time=300)
-
-                # Inserir fluxo temporal de exemplo
-                await post_time_flow(local_beacon_id=local_beacon_id, time_slot=timestamp, total_devices_detected=len(devices), average_dwell_time=450)
-
-                # Exemplo de alerta de aglomeração
-                if len(devices) > 20:  # Exemplo de condição de alerta para aglomeração
-                    await post_event_alert(local_beacon_id=local_beacon_id, date_time_event=timestamp, event_type="Aglomeração", description="Alta concentração de dispositivos detectados")
-
+async def post_beacon(beacon_id, location_name):
+    url = f"{api_base_url}/beacon-locations"
+    data = [{
+        "beacon_id": beacon_id,
+        "location_name": location_name
+    }]
+    try:
+        response = requests.post(url, json=data)
+        if response.status_code == 201:
+            print(f"Beacon {beacon_id} inserido com sucesso.")
         else:
-            print("Nenhum dispositivo BLE encontrado.")
+            print(f"Erro ao inserir beacon {beacon_id}. Status code: {response.status_code}")
+    except requests.RequestException as e:
+        print(f"Erro de requisição ao inserir beacon {beacon_id}: {e}")
 
-        # Aguardar 15 segundos antes da próxima varredura
-        await asyncio.sleep(15)
-
-# Executar a varredura
-loop = asyncio.get_event_loop()
-loop.run_until_complete(scan_ble_devices())
+async def get_beacon(beacon_id):
+    url = f"{api_base_url}/beacon-location"
+    request = {
+        "id": beacon_id
+    }
+    try:
+        response = requests.post(url, json=request)
+        if response.status_code < 200 or response.status_code > 299:
+            print(f"Dispositivo {beacon_id} não registrado no sistema")
+            return None
+        else:
+            device_data = response.json()
+            print(f"Dispositivo {beacon_id} registrado no sistema: {device_data}")
+            return device_data
+    except requests.RequestException as e:
+        print(f"Erro de requisição: {e}")
+        return None
