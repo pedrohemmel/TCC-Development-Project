@@ -1,6 +1,12 @@
 const db = require('../service/dbConnection');
 
 // Funções para a tabela Devices
+const getDeviceById = async (id_device) => {
+  const query = 'SELECT * FROM Devices WHERE id_device = ?';
+  const [rows] = await db.execute(query, [id_device]);
+  return rows.length ? rows[0] : null; 
+};
+
 const getDevices = async () => {
   try {
     const [devices] = await db.execute('SELECT * FROM Devices;');
@@ -11,11 +17,11 @@ const getDevices = async () => {
   }
 };
 
-const addDevice = async (first_seen, last_seen) => {
+const addDevice = async (id_device, first_seen, last_seen) => {
   try {
     const [result] = await db.execute(
-      'INSERT INTO Devices (first_seen, last_seen) VALUES (?, ?);', 
-      [first_seen, last_seen]
+      'INSERT INTO Devices (id_device, first_seen, last_seen) VALUES (?, ?, ?);', 
+      [id_device, first_seen, last_seen]
     );
     return { insertId: result.insertId };
   } catch (error) {
@@ -48,6 +54,7 @@ const deleteDevice = async (id_device) => {
 };
 
 module.exports = {
+  getDeviceById,
   getDevices,
   addDevice,
   updateDevice,

@@ -10,6 +10,7 @@ const eventsAlertsController = require('./controller/eventsAlertsController');
 const router = express.Router();
 
 // Rotas para o controlador de Devices
+router.post('/device', deviceController.getDeviceById)
 router.get('/devices', deviceController.getDevices);
 router.post('/devices', deviceController.addDevices);
 router.put('/devices', deviceController.updateDevice);
@@ -17,6 +18,7 @@ router.delete('/devices/:id_device', deviceController.deleteDevice);
 
 // Rotas para o controlador de Beacon_Locations
 router.get('/beacon-locations', beaconLocationsController.getBeaconLocations);
+router.post('/beacon-location', beaconLocationsController.getBeaconLocationById);
 router.post('/beacon-locations', beaconLocationsController.addBeaconLocations);
 router.put('/beacon-locations', beaconLocationsController.updateBeaconLocation);
 router.delete('/beacon-locations/:local_beacon_id', beaconLocationsController.deleteBeaconLocation);
