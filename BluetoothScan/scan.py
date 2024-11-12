@@ -8,42 +8,42 @@ from datetime import datetime
 
 #Imports locais do projeto
 from model.device_model import *
-from action.requests_db import *
+from model.alert_event_model import *
+
+from action.beacon_requests import *
+from action.device_detection_requests import *
+from action.device_requests import *
+from action.event_alert_requests import *
+
+#Local variables
+reach_square_meters = 50
+
+crowded_area_limit = 3
+risk_crowded_area_limit = 4
+critical_risk_crowded_area_limit = 5
+
 
 local_beacon_id = 1
 local_name = "portaria_2"
 
 # Funções auxiliares
 async def devices_missing_on_list(new_list, old_list):
-    print("________________---------------________________")
-    print("NewList")
-    for item in new_list:
-        print("" + item.id_device + "\n")
-    await asyncio.sleep(3)
-    
-    print("________________---------------________________")
-    print("OldList")
-    for item in old_list:
-        print("" + item.id_device + "\n")
-    await asyncio.sleep(3)
-    
     # Extraindo os id_device de cada lista para comparar
     new_ids = {item.id_device for item in new_list}
     missing_list = [item for item in old_list if item.id_device not in new_ids]
-    
-    print("________________---------------________________")
-    print("MissingList")
-    for item in missing_list:
-        print("" + item.id_device + "\n")
-    await asyncio.sleep(3)
-    
     return missing_list
-# async def devices_missing_on_list(new_list, old_list):
-#     missing_list = [item for item in old_list if item not in new_list]
-#     return missing_list
 
 def deviceIsNotInList(device_list, device):
     return len([item for item in device_list if device['id_device'] == item.id_device]) == 0
+
+def eventAlert(device_list):
+    if len(device_list) >= (critical_risk_crowded_area_limit * reach_square_meters):
+        return alert_event_model.CRITICAL_RISK_AREA
+    elif len(device_list) >= (risk_crowded_area_limit * reach_square_meters):
+        return alert_event_model.RISK_AREA
+    elif len(device_list) >= (crowded_area_limit * reach_square_meters):
+        return alert_event_model.CROWDED_AREA
+    return alert_event_model.SAFE_AREA
 
 async def register_local_beacon_id_needed():
     beacon_found = await get_beacon(local_beacon_id)
@@ -63,6 +63,11 @@ async def register_devices_detection(device_list):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for device in device_list:
         await post_device_detection(device_id=device.id_device, local_beacon_id=local_beacon_id, date_time_in_beacon=now, dwell_time=device.dwell_time)
+
+async def registerEventAlert(event_alert):
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if event_alert != alert_event_model.SAFE_AREA:
+        await post_event_alert(local_beacon_id, now, event_alert.name, event_alert.value)
 
 # Função principal de varredura BLE e envio de dados
 async def scan_ble_devices():
@@ -105,22 +110,9 @@ async def scan_ble_devices():
                     new_device_list.append(device_in_list)
                     print(f"Nome: {device_name}, id: {device_in_list.id_device}, SEGUNDA VEZ AQUI, SEU TEMPO AQUI JÁ É DE: {device_in_list.dwell_time}")
 
-                
-                # Timestamp de detecção
-                # timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
-                # Inserir dispositivo e detecção
-                # await post_device(device_id=device.address, first_seen=timestamp, last_seen=timestamp)
-                # await post_device_detection(device_id=device.address, local_beacon_id=local_beacon_id, date_time_in_beacon=timestamp, dwell_time=300)
+            event_alert = eventAlert(new_device_list)
+            await registerEventAlert(event_alert)
 
-                # Inserir fluxo temporal de exemplo
-                # await post_time_flow(local_beacon_id=local_beacon_id, time_slot=timestamp, total_devices_detected=len(devices), average_dwell_time=450)
-
-                # Exemplo de alerta de aglomeração
-                # if len(devices) > 20:  # Exemplo de condição de alerta para aglomeração
-                    # await post_event_alert(local_beacon_id=local_beacon_id, date_time_event=timestamp, event_type="Aglomeração", description="Alta concentração de dispositivos detectados")
-            # for item in new_device_list:
-            #     print(f"{item}\n")
             missing_list = new_device_list
             if len(device_list) > 0:
                 missing_list = await devices_missing_on_list(new_device_list, device_list)
