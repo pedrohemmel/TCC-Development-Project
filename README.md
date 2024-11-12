@@ -151,6 +151,10 @@ Com essa configuração, você terá um ambiente de desenvolvimento pronto para 
 - [x] Criar classes js para população do banco de dados via API
 - [x] Melhorar a lógica da função list_missing
 - [x] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
+- [x] Definir lógica para disparar o alerta de evento
+- [ ] Escrever sobre especificações do bluetooth e logica para criar os alertas do evento
+- [ ] Escrever problema encontrado, segurança nos eventos. Aglomerações, brigas, locais com ausência de segurança.
 - [ ] Simular cenários de uso para obter dados que possam ser utilizados para analises
 - [ ] Exportar os dados e inserir no Power BI
 - [ ] Criar páginas de análise dos dados obtidos
+- [ ] Verificar mudanças feitas do TCC1 para o TCC2 e recriar a introdução

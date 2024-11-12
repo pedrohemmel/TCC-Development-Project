@@ -26,16 +26,6 @@ CREATE TABLE Device_Detection (
     FOREIGN KEY (local_beacon_id) REFERENCES Beacon_Locations(local_beacon_id)
 );
 
--- Tabela de Fluxo Temporal
-CREATE TABLE Time_Flow (
-    time_slot DATETIME NOT NULL,
-    local_beacon_id INT NOT NULL,
-    total_devices_detected INT DEFAULT 0,
-    average_dwell_time INT DEFAULT 0, -- Tempo médio de permanência em segundos
-    PRIMARY KEY (time_slot, local_beacon_id),
-    FOREIGN KEY (local_beacon_id) REFERENCES Beacon_Locations(local_beacon_id)
-);
-
 -- Tabela de Eventos e Alertas
 CREATE TABLE Events_Alerts (
     event_id INT PRIMARY KEY AUTO_INCREMENT,

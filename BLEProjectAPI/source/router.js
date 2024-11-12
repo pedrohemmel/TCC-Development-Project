@@ -4,7 +4,6 @@ const express = require('express');
 const deviceController = require('./controller/devicesController');
 const beaconLocationsController = require('./controller/beaconLocationsController');
 const deviceDetectionsController = require('./controller/deviceDetectionsController');
-const timeFlowController = require('./controller/timeFlowController');
 const eventsAlertsController = require('./controller/eventsAlertsController');
 
 const router = express.Router();
@@ -27,11 +26,6 @@ router.delete('/beacon-locations/:local_beacon_id', beaconLocationsController.de
 router.get('/device-detections', deviceDetectionsController.getDeviceDetections);
 router.post('/device-detections', deviceDetectionsController.addDeviceDetections);
 router.delete('/device-detections/:detection_id', deviceDetectionsController.deleteDeviceDetection);
-
-// Rotas para o controlador de Time_Flow
-router.get('/time-flow', timeFlowController.getTimeFlow);
-router.post('/time-flow', timeFlowController.addTimeFlows);
-router.put('/time-flow', timeFlowController.updateTimeFlow);
 
 // Rotas para o controlador de Events_Alerts
 router.get('/events-alerts', eventsAlertsController.getEventsAlerts);
