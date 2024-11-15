@@ -5,6 +5,7 @@ const deviceController = require('./controller/devicesController');
 const beaconLocationsController = require('./controller/beaconLocationsController');
 const deviceDetectionsController = require('./controller/deviceDetectionsController');
 const eventsAlertsController = require('./controller/eventsAlertsController');
+const eventsController = require('./controller/eventsController');
 
 const router = express.Router();
 
@@ -32,5 +33,11 @@ router.get('/events-alerts', eventsAlertsController.getEventsAlerts);
 router.post('/events-alerts', eventsAlertsController.addEventsAlerts);
 router.put('/events-alerts', eventsAlertsController.updateEventAlert);
 router.delete('/events-alerts/:event_id', eventsAlertsController.deleteEventAlert);
+
+// Rotas para o controlador de Events
+router.get('/events', eventsController.getEvents);
+router.post('/events', eventsController.addEvent);
+router.put('/events', eventsController.updateEvent);
+router.delete('/events/:event_id', eventsController.deleteEvent);
 
 module.exports = router;

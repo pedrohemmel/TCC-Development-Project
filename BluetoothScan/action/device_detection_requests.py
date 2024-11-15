@@ -3,11 +3,12 @@ import requests
 
 api_base_url = "http://localhost:3000"
 
-async def post_device_detection(device_id, local_beacon_id, date_time_in_beacon, dwell_time):
+async def post_device_detection(device_id, local_beacon_id, event_id, date_time_in_beacon, dwell_time):
     url = f"{api_base_url}/device-detections"
     data = [{
         "id_device": device_id,
         "local_beacon_id": local_beacon_id,
+        "event_id": event_id,
         "date_time_in_beacon": date_time_in_beacon,
         "dwell_time": dwell_time
     }]

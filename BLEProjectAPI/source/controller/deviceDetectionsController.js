@@ -15,8 +15,8 @@ const addDeviceDetections = async (req, res) => {
     try {
         const results = [];
         for (const detection of detections) {
-            const { id_device, local_beacon_id, date_time_in_beacon, dwell_time } = detection;
-            const result = await model.addDeviceDetection(id_device, local_beacon_id, date_time_in_beacon, dwell_time);
+            const { id_device, local_beacon_id, event_id, date_time_in_beacon, dwell_time } = detection;
+            const result = await model.addDeviceDetection(id_device, local_beacon_id, event_id, date_time_in_beacon, dwell_time);
             results.push(result);
         }
         return res.status(201).json(results);

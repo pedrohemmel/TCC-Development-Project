@@ -3,9 +3,10 @@ import requests
 
 api_base_url = "http://localhost:3000"
 
-async def post_event_alert(local_beacon_id, date_time_event, event_type, description):
+async def post_event_alert(event_id, local_beacon_id, date_time_event, event_type, description):
     url = f"{api_base_url}/events-alerts"
     data = [{
+        "event_id": event_id,
         "local_beacon_id": local_beacon_id,
         "date_time_event": date_time_event,
         "event_type": event_type,

@@ -26,6 +26,8 @@ critical_risk_crowded_area_limit = 5
 local_beacon_id = 1
 local_name = "portaria_2"
 
+event_id = 1
+
 # Funções auxiliares
 async def devices_missing_on_list(new_list, old_list):
     # Extraindo os id_device de cada lista para comparar
@@ -62,12 +64,12 @@ async def register_devices(device_list):
 async def register_devices_detection(device_list):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     for device in device_list:
-        await post_device_detection(device_id=device.id_device, local_beacon_id=local_beacon_id, date_time_in_beacon=now, dwell_time=device.dwell_time)
+        await post_device_detection(device_id=device.id_device, local_beacon_id=local_beacon_id, event_id=event_id, date_time_in_beacon=now, dwell_time=device.dwell_time)
 
 async def registerEventAlert(event_alert):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if event_alert != alert_event_model.SAFE_AREA:
-        await post_event_alert(local_beacon_id, now, event_alert.name, event_alert.value)
+        await post_event_alert(event_id, local_beacon_id, now, event_alert.name, event_alert.value)
 
 # Função principal de varredura BLE e envio de dados
 async def scan_ble_devices():
@@ -80,35 +82,37 @@ async def scan_ble_devices():
         if devices:
             print(f"Dispositivos encontrados ({len(devices)}):")
             for device in devices:
-                device_name = device.name
-                device_found = await get_device(device_id=device.address)
-                if device_found is None:
-                    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    device = device_model(id_device=device.address, first_seen=now, last_seen=now, dwell_time=0)
-                    await register_devices([device])
-                    new_device_list.append(device)
-                    print("________________-------------------_______________")
-                    print(f"Nome: {device_name}, id: {device.id_device}, ACABOU DE SER INSERIDO")
-                elif deviceIsNotInList(device_list, device_found):
-                    device_in_list = device_model(
-                        id_device=device_found['id_device'],
-                        first_seen=device_found['first_seen'],
-                        last_seen=device_found['last_seen'],
-                        dwell_time=0
-                    )
-                    new_device_list.append(device_in_list)
-                    print(f"Nome: {device_name}, id: {device_in_list.id_device}, EXISTENTE NO DB MAS É A PRIMEIRA VEZ")
-                else:
-                    device_found_item = [item for item in device_list if device_found['id_device'] == item.id_device]
-                    new_device_list = [item for item in new_device_list if device_found['id_device'] != item.id_device]
-                    device_in_list = device_model(
-                        id_device=device_found_item[0].id_device,
-                        first_seen=device_found_item[0].first_seen,
-                        last_seen=device_found_item[0].last_seen,
-                        dwell_time=device_found_item[0].dwell_time + 15
-                    )
-                    new_device_list.append(device_in_list)
-                    print(f"Nome: {device_name}, id: {device_in_list.id_device}, SEGUNDA VEZ AQUI, SEU TEMPO AQUI JÁ É DE: {device_in_list.dwell_time}")
+                if device.address == "DDF373F2-7091-1532-8444-303B15B3026D":
+                    device_name = device.name
+                    device_found = await get_device(device_id=device.address)
+                    
+                    if device_found is None:
+                        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        device = device_model(id_device=device.address, first_seen=now, last_seen=now, dwell_time=0)
+                        await register_devices([device])
+                        new_device_list.append(device)
+                        print("________________-------------------_______________")
+                        print(f"Nome: {device_name}, id: {device.id_device}, ACABOU DE SER INSERIDO")
+                    elif deviceIsNotInList(device_list, device_found):
+                        device_in_list = device_model(
+                            id_device=device_found['id_device'],
+                            first_seen=device_found['first_seen'],
+                            last_seen=device_found['last_seen'],
+                            dwell_time=0
+                        )
+                        new_device_list.append(device_in_list)
+                        print(f"Nome: {device_name}, id: {device_in_list.id_device}, EXISTENTE NO DB MAS É A PRIMEIRA VEZ")
+                    else:
+                        device_found_item = [item for item in device_list if device_found['id_device'] == item.id_device]
+                        new_device_list = [item for item in new_device_list if device_found['id_device'] != item.id_device]
+                        device_in_list = device_model(
+                            id_device=device_found_item[0].id_device,
+                            first_seen=device_found_item[0].first_seen,
+                            last_seen=device_found_item[0].last_seen,
+                            dwell_time=device_found_item[0].dwell_time + 15
+                        )
+                        new_device_list.append(device_in_list)
+                        print(f"Nome: {device_name}, id: {device_in_list.id_device}, SEGUNDA VEZ AQUI, SEU TEMPO AQUI JÁ É DE: {device_in_list.dwell_time}")
 
             event_alert = eventAlert(new_device_list)
             await registerEventAlert(event_alert)

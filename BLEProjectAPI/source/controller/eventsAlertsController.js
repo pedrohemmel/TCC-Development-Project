@@ -15,8 +15,8 @@ const addEventsAlerts = async (req, res) => {
     try {
         const results = [];
         for (const event of events) {
-            const { local_beacon_id, date_time_event, event_type, description } = event;
-            const result = await model.addEventAlert(local_beacon_id, date_time_event, event_type, description);
+            const { event_id, local_beacon_id, date_time_event, event_type, description } = event;
+            const result = await model.addEventAlert(event_id, local_beacon_id, date_time_event, event_type, description);
             results.push(result);
         }
         return res.status(201).json(results);
