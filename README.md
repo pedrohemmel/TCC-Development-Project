@@ -152,9 +152,9 @@ Com essa configuração, você terá um ambiente de desenvolvimento pronto para 
 - [x] Melhorar a lógica da função list_missing
 - [x] Melhorar o algoritmo do BLEControlApp para obter tempo em que cada dispositivo permaneceu no estande
 - [x] Definir lógica para disparar o alerta de evento
-- [ ] Conformar todas as tabelas para fazer os registros referente a nova tabela de evento, visando identificar o evento.
-- [ ] Escrever sobre especificações do bluetooth e logica para criar os alertas do evento
-- [ ] Escrever problema encontrado, segurança nos eventos. Aglomerações, brigas, locais com ausência de segurança.
+- [X] Conformar todas as tabelas para fazer os registros referente a nova tabela de evento, visando identificar o evento.
+- [X] Escrever sobre especificações do bluetooth e logica para criar os alertas do evento
+- [x] Escrever problema encontrado, segurança nos eventos. Aglomerações, brigas, locais com ausência de segurança.
 - [ ] Simular cenários de uso para obter dados que possam ser utilizados para analises
 - [ ] Exportar os dados e inserir no Power BI
 - [ ] Criar páginas de análise dos dados obtidos

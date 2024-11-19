@@ -24,7 +24,7 @@ critical_risk_crowded_area_limit = 5
 
 
 local_beacon_id = 1
-local_name = "portaria_2"
+local_name = "portaria"
 
 event_id = 1
 
@@ -39,12 +39,22 @@ def deviceIsNotInList(device_list, device):
     return len([item for item in device_list if device['id_device'] == item.id_device]) == 0
 
 def eventAlert(device_list):
-    if len(device_list) >= (critical_risk_crowded_area_limit * reach_square_meters):
-        return alert_event_model.CRITICAL_RISK_AREA
-    elif len(device_list) >= (risk_crowded_area_limit * reach_square_meters):
-        return alert_event_model.RISK_AREA
-    elif len(device_list) >= (crowded_area_limit * reach_square_meters):
-        return alert_event_model.CROWDED_AREA
+    if local_name != "banheiro":
+        if len(device_list) >= (critical_risk_crowded_area_limit * reach_square_meters):
+            return alert_event_model.CRITICAL_RISK_AREA
+        elif len(device_list) >= (risk_crowded_area_limit * reach_square_meters):
+            return alert_event_model.RISK_AREA
+        elif len(device_list) >= (crowded_area_limit * reach_square_meters):
+            return alert_event_model.CROWDED_AREA
+    else:
+        if len(device_list) >= 3:
+            return alert_event_model.CRITICAL_RISK_AREA
+        # elif len(device_list) >= (risk_crowded_area_limit * reach_square_meters):
+        elif len(device_list) >= 2:
+            return alert_event_model.RISK_AREA
+        # elif len(device_list) >= (crowded_area_limit * reach_square_meters):
+        elif len(device_list) >= 1:
+            return alert_event_model.CROWDED_AREA
     return alert_event_model.SAFE_AREA
 
 async def register_local_beacon_id_needed():
@@ -82,7 +92,7 @@ async def scan_ble_devices():
         if devices:
             print(f"Dispositivos encontrados ({len(devices)}):")
             for device in devices:
-                if device.address == "DDF373F2-7091-1532-8444-303B15B3026D":
+                if device.address == "DDF373F2-7091-1532-8444-303B15B3026D" or device.address == "6570A3C7-5C34-371E-152C-E16E36F0E989" or device.address == "E34064FE-B5DD-1D5D-F270-43B95095B31A":
                     device_name = device.name
                     device_found = await get_device(device_id=device.address)
                     
@@ -162,3 +172,13 @@ async def teste_missinglist():
 
 # asyncio.run(teste_missinglist())
 
+
+# def uuid_to_mac(uuid: str) -> str:
+#     # Pega os primeiros 12 caracteres (ignorando os traços) e coloca ":" a cada dois caracteres
+#     mac = ':'.join(uuid.replace("-", "")[i:i+2] for i in range(0, 12, 2))
+#     return mac.upper()  # Retorna em letras maiúsculas
+
+# Exemplo de uso
+# uuid = "DDF373F2-7091-1532-8444-303B15B3026D"
+# mac_address = uuid_to_mac(uuid)
+# print(f"MAC Address: {mac_address}")
