@@ -11,11 +11,11 @@ const getEventsAlerts = async () => {
   }
 };
 
-const addEventAlert = async (local_beacon_id, date_time_event, event_type, description) => {
+const addEventAlert = async (event_id, local_beacon_id, date_time_event, event_type, description) => {
   try {
     const [result] = await db.execute(
-      'INSERT INTO Events_Alerts (local_beacon_id, date_time_event, event_type, description) VALUES (?, ?, ?, ?);',
-      [local_beacon_id, date_time_event, event_type, description]
+      'INSERT INTO Events_Alerts (event_id, local_beacon_id, date_time_event, event_type, description) VALUES (?, ?, ?, ?, ?);',
+      [event_id, local_beacon_id, date_time_event, event_type, description]
     );
     return { insertId: result.insertId };
   } catch (error) {

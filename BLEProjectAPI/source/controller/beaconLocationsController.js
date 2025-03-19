@@ -1,5 +1,19 @@
 const model = require('../model/beaconLocationsModel');
 
+const getBeaconLocationById = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const payload = await model.getBeaconLocationById(id);
+        if (!payload) {
+            return res.status(404).json({ message: 'Localização não encontrada' });
+        }
+        return res.status(200).json(payload);
+    } catch (error) {
+        console.error('Erro ao buscar localização:', error);
+        return res.status(500).json({ message: 'Erro ao buscar localização' });
+    }
+};
+
 const getBeaconLocations = async (_req, res) => {
     try {
         const payload = await model.getBeaconLocations();
@@ -15,8 +29,8 @@ const addBeaconLocations = async (req, res) => {
     try {
         const results = [];
         for (const location of locations) {
-            const { location_name } = location;
-            const result = await model.addBeaconLocation(location_name);
+            const { location_name, beacon_id } = location;
+            const result = await model.addBeaconLocation(beacon_id, location_name);
             results.push(result);
         }
         return res.status(201).json(results);
@@ -49,6 +63,7 @@ const deleteBeaconLocation = async (req, res) => {
 };
 
 module.exports = {
+    getBeaconLocationById,
     getBeaconLocations,
     addBeaconLocations,
     updateBeaconLocation,

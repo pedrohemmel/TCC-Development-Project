@@ -11,11 +11,11 @@ const getDeviceDetections = async () => {
   }
 };
 
-const addDeviceDetection = async (id_device, local_beacon_id, date_time_in_beacon, dwell_time) => {
+const addDeviceDetection = async (id_device, local_beacon_id, event_id, date_time_in_beacon, dwell_time) => {
   try {
     const [result] = await db.execute(
-      'INSERT INTO Device_Detection (id_device, local_beacon_id, date_time_in_beacon, dwell_time) VALUES (?, ?, ?, ?);',
-      [id_device, local_beacon_id, date_time_in_beacon, dwell_time]
+      'INSERT INTO Device_Detection (id_device, local_beacon_id, event_id, date_time_in_beacon, dwell_time) VALUES (?, ?, ?, ?, ?);',
+      [id_device, local_beacon_id, event_id, date_time_in_beacon, dwell_time]
     );
     return { insertId: result.insertId };
   } catch (error) {

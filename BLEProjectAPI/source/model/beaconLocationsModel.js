@@ -1,6 +1,13 @@
 const db = require('../service/dbConnection');
 
 // Funções para a tabela Beacon_Locations
+const getBeaconLocationById = async (id) => {
+  console.log("\n\nopi" + id + "\n\n" )
+  const query = 'SELECT * FROM Beacon_Locations WHERE local_beacon_id = ?';
+  const [rows] = await db.execute(query, [id]);
+  return rows.length ? rows[0] : null; // Retorna o primeiro resultado ou null se não encontrado
+};
+
 const getBeaconLocations = async () => {
   try {
     const [locations] = await db.execute('SELECT * FROM Beacon_Locations;');
@@ -11,11 +18,11 @@ const getBeaconLocations = async () => {
   }
 };
 
-const addBeaconLocation = async (location_name) => {
+const addBeaconLocation = async (beacon_id, location_name) => {
   try {
     const [result] = await db.execute(
-      'INSERT INTO Beacon_Locations (location_name) VALUES (?);',
-      [location_name]
+      'INSERT INTO Beacon_Locations (local_beacon_id, location_name) VALUES (?, ?);',
+      [beacon_id, location_name]
     );
     return { insertId: result.insertId };
   } catch (error) {
@@ -48,6 +55,7 @@ const deleteBeaconLocation = async (local_beacon_id) => {
 };
 
 module.exports = {
+  getBeaconLocationById,
   getBeaconLocations,
   addBeaconLocation,
   updateBeaconLocation,
